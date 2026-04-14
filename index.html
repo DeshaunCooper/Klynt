@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KLYNT | The Precision Workflow Engine</title>
+    <title>KLYNT — Management for Modern Operators</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg: #0A0A0A;
             --surface: #141414;
             --border: #262626;
+            --mint: #00FFC2;
             --text-main: #F5F5F5;
             --text-dim: #888888;
-            --accent: #2D5BFF;
-            --accent-glow: rgba(45, 91, 255, 0.3);
+            --radius: 12px;
             --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
@@ -23,210 +23,272 @@
             background-color: var(--bg); 
             color: var(--text-main); 
             font-family: 'Inter', sans-serif; 
-            line-height: 1.6;
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
 
         /* Typography */
         h1, h2, h3 { letter-spacing: -0.04em; line-height: 1.1; }
-        .mono { font-family: monospace; text-transform: uppercase; font-size: 12px; letter-spacing: 0.1em; color: var(--accent); }
+        .mono { font-family: monospace; text-transform: uppercase; font-size: 11px; letter-spacing: 0.1em; color: var(--mint); }
 
         /* Layout */
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 40px; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
         section { padding: 120px 0; }
 
-        /* Header */
+        /* Navigation */
         nav {
             position: fixed; top: 0; width: 100%; z-index: 1000;
-            padding: 24px 0; backdrop-filter: blur(12px);
+            padding: 24px 0; backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border);
         }
-        .nav-content { display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-weight: 800; font-size: 24px; letter-spacing: -1px; }
-        .nav-links { display: flex; gap: 32px; align-items: center; }
-        .nav-links a { color: var(--text-dim); text-decoration: none; font-size: 14px; transition: var(--transition); }
-        .nav-links a:hover { color: var(--text-main); }
-        .btn-sm { 
-            background: var(--text-main); color: var(--bg); 
-            padding: 10px 20px; border-radius: 4px; font-weight: 600; font-size: 13px;
-            cursor: pointer; border: none; transition: var(--transition);
+        .nav-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-weight: 800; font-size: 22px; letter-spacing: -1px; display: flex; align-items: center; gap: 8px; }
+        .logo span { color: var(--mint); }
+        .btn-mint {
+            background: var(--mint); color: #000; padding: 10px 24px;
+            border-radius: 100px; font-weight: 600; text-decoration: none;
+            font-size: 14px; transition: var(--transition); border: none; cursor: pointer;
         }
-        .btn-sm:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(255,255,255,0.1); }
+        .btn-mint:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(0, 255, 194, 0.3); }
 
         /* Hero */
-        .hero { text-align: center; padding-top: 200px; }
-        .hero h1 { font-size: clamp(48px, 8vw, 96px); margin-bottom: 24px; font-weight: 800; }
-        .hero p { color: var(--text-dim); font-size: 20px; max-width: 600px; margin: 0 auto 40px; }
+        .hero { text-align: center; padding-top: 180px; }
+        .hero h1 { font-size: clamp(48px, 8vw, 84px); max-width: 900px; margin: 24px auto; font-weight: 600; }
+        .hero p { color: var(--text-dim); font-size: 20px; max-width: 600px; margin: 0 auto 48px; }
 
-        /* Dashboard Preview */
-        .dashboard-container {
+        /* Interactive Dashboard Sim */
+        .app-window {
             background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 8px;
-            box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 50px 100px rgba(0,0,0,0.6);
             margin-top: 60px;
-            position: relative;
+            text-align: left;
         }
-        .db-header {
-            display: flex; gap: 8px; padding: 12px; border-bottom: 1px solid var(--border);
+        .app-header {
+            padding: 20px 32px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--border); }
-        .db-content { display: grid; grid-template-columns: 240px 1fr; min-height: 400px; }
-        .db-sidebar { border-right: 1px solid var(--border); padding: 20px; }
-        .db-main { padding: 40px; }
+        .app-tabs { display: flex; gap: 24px; }
+        .tab { color: var(--text-dim); cursor: pointer; font-size: 14px; font-weight: 500; transition: var(--transition); padding-bottom: 4px; border-bottom: 2px solid transparent; }
+        .tab.active { color: var(--mint); border-bottom-color: var(--mint); }
+
+        .app-body { padding: 40px; min-height: 500px; }
         
-        .db-card {
-            background: #1A1A1A;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 24px;
+        /* Dashboard Content */
+        .metrics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 40px; }
+        .card { background: #1A1A1A; border: 1px solid var(--border); padding: 24px; border-radius: var(--radius); }
+        .val { font-size: 32px; font-weight: 600; margin-top: 8px; display: block; }
+
+        /* Onboarding Overlay */
+        #onboarding-overlay {
+            position: absolute; inset: 0; background: rgba(10,10,10,0.95);
+            display: flex; align-items: center; justify-content: center; z-index: 10;
             transition: var(--transition);
         }
-        .db-card:hover { border-color: var(--accent); }
+        .onboarding-card { width: 400px; text-align: center; }
+        .input-group { margin: 24px 0; text-align: left; }
+        input, select {
+            width: 100%; background: #1A1A1A; border: 1px solid var(--border);
+            padding: 14px; border-radius: 8px; color: white; margin-top: 8px;
+        }
 
-        .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-        .stat-val { font-size: 32px; font-weight: 800; display: block; margin-top: 8px; }
+        /* Invoice List */
+        .invoice-row {
+            display: grid; grid-template-columns: 1fr 1fr 100px 100px;
+            padding: 16px; border-bottom: 1px solid var(--border); align-items: center;
+            font-size: 14px;
+        }
+        .status { font-size: 11px; padding: 4px 8px; border-radius: 4px; background: rgba(0,255,194,0.1); color: var(--mint); text-align: center; }
 
-        /* Features */
-        .feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 80px; }
-        .f-card { padding: 40px; border: 1px solid var(--border); border-radius: 8px; transition: var(--transition); }
-        .f-card:hover { background: var(--surface); }
+        /* Sections */
+        .feature-item { border-left: 2px solid var(--border); padding-left: 32px; margin-bottom: 60px; }
+        .feature-item:hover { border-left-color: var(--mint); }
 
-        /* Footer */
-        footer { padding: 80px 0; border-top: 1px solid var(--border); }
-        .footer-content { display: flex; justify-content: space-between; align-items: flex-start; }
-        .footer-col h4 { margin-bottom: 24px; font-size: 14px; }
-        .footer-col ul { list-style: none; }
-        .footer-col li { margin-bottom: 12px; font-size: 14px; color: var(--text-dim); }
+        footer { border-top: 1px solid var(--border); padding: 60px 0; text-align: center; }
+
+        .hidden { display: none; opacity: 0; }
+        .visible { display: block; opacity: 1; }
 
         @media (max-width: 768px) {
-            .db-content, .feature-grid, .stat-grid { grid-template-columns: 1fr; }
-            .db-sidebar { display: none; }
+            .metrics-grid { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 40px; }
+            .app-header { flex-direction: column; gap: 20px; }
         }
     </style>
 </head>
 <body>
 
     <nav>
-        <div class="container nav-content">
-            <div class="logo">KLYNT</div>
-            <div class="nav-links">
-                <a href="#">Product</a>
-                <a href="#">Workflow</a>
-                <a href="#">Pricing</a>
-                <button class="btn-sm">Start Engine</button>
+        <div class="container nav-inner">
+            <div class="logo">KL<span>Y</span>NT</div>
+            <div class="nav-links" style="display:flex; gap:30px; align-items:center;">
+                <a href="#" style="color:var(--text-dim); text-decoration:none; font-size:14px;">Case Study</a>
+                <button class="btn-mint" onclick="resetOnboarding()">Reset Demo</button>
             </div>
         </div>
     </nav>
 
-    <main>
-        <section class="hero container">
-            <p class="mono">Product Launch 2026</p>
-            <h1>Focus is the<br>new capital.</h1>
-            <p>Klynt is a high-fidelity workspace for digital architects. Speed, precision, and elegance in every pixel.</p>
+    <main class="container">
+        <section class="hero">
+            <p class="mono">Available for Early Access</p>
+            <h1>The operating system for the independent founder.</h1>
+            <p>A streamlined ecosystem for clients, invoices, and cash flow. Built for those who value clarity over clutter.</p>
             
-            <div class="dashboard-container">
-                <div class="db-header">
-                    <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+            <div class="app-window" id="appFrame">
+                <div id="onboarding-overlay">
+                    <div class="onboarding-card">
+                        <p class="mono">Step 01 / Welcome</p>
+                        <h2 style="margin: 12px 0 32px;">Initialize your workspace.</h2>
+                        <div class="input-group">
+                            <label class="mono">Your Name</label>
+                            <input type="text" id="userName" placeholder="e.g. Alex Rivera">
+                        </div>
+                        <div class="input-group">
+                            <label class="mono">Business Role</label>
+                            <select id="userRole">
+                                <option value="Owner">Business Owner</option>
+                                <option value="Freelancer">Freelancer</option>
+                                <option value="Manager">Studio Manager</option>
+                            </select>
+                        </div>
+                        <button class="btn-mint" style="width:100%; padding: 18px;" onclick="completeOnboarding()">Launch Dashboard</button>
+                    </div>
                 </div>
-                <div class="db-content">
-                    <aside class="db-sidebar">
-                        <div style="height: 12px; background: var(--border); width: 80%; margin-bottom: 20px;"></div>
-                        <div style="height: 12px; background: var(--border); width: 60%; margin-bottom: 20px;"></div>
-                        <div style="height: 12px; background: var(--accent); width: 90%; margin-bottom: 20px; opacity: 0.5;"></div>
-                    </aside>
-                    <main class="db-main">
-                        <div class="stat-grid">
-                            <div class="db-card">
-                                <span class="mono">Efficiency</span>
-                                <span class="stat-val">98.2%</span>
+
+                <div class="app-header">
+                    <div class="app-tabs">
+                        <div class="tab active" onclick="switchTab('home', this)">Home</div>
+                        <div class="tab" onclick="switchTab('clients', this)">Clients</div>
+                        <div class="tab" onclick="switchTab('invoices', this)">Invoices</div>
+                        <div class="tab" onclick="switchTab('money', this)">Money</div>
+                    </div>
+                    <div class="user-id" id="userDisplay" style="font-size:12px; font-weight: 500;">
+                        ID: 000-GUEST
+                    </div>
+                </div>
+
+                <div class="app-body">
+                    <div id="view-home" class="view">
+                        <h3 id="welcomeMsg" style="font-size: 24px; margin-bottom: 32px;">Welcome back.</h3>
+                        <div class="metrics-grid">
+                            <div class="card">
+                                <span class="mono">Monthly Revenue</span>
+                                <span class="val">$12,450.00</span>
                             </div>
-                            <div class="db-card">
-                                <span class="mono">Active Cycles</span>
-                                <span class="stat-val">1,240</span>
+                            <div class="card">
+                                <span class="mono">Open Invoices</span>
+                                <span class="val">4</span>
                             </div>
-                            <div class="db-card">
-                                <span class="mono">Uptime</span>
-                                <span class="stat-val">99.9%</span>
+                            <div class="card">
+                                <span class="mono">Client Growth</span>
+                                <span class="val">+12%</span>
                             </div>
                         </div>
-                        <div class="db-card" style="margin-top: 24px; text-align: left;">
-                            <span class="mono">Current Sprint</span>
-                            <h3 style="margin-top: 12px;">Global Identity System v2</h3>
-                            <div style="height: 4px; background: var(--border); margin-top: 20px; border-radius: 2px;">
-                                <div style="width: 65%; height: 100%; background: var(--accent);"></div>
-                            </div>
+                        <p class="mono" style="margin-bottom:16px;">Recent Activity</p>
+                        <div class="invoice-row" style="background:#1A1A1A; border-radius:8px;">
+                            <span>Design Sprint - Nike</span>
+                            <span class="status">PAID</span>
+                            <span>$4,200</span>
+                            <span style="color:var(--text-dim)">Apr 12</span>
                         </div>
-                    </main>
+                    </div>
+
+                    <div id="view-clients" class="view hidden">
+                        <div style="display:flex; justify-content:space-between; margin-bottom:32px;">
+                            <h3>Client Directory</h3>
+                            <button class="btn-mint" style="padding: 6px 16px; font-size:12px;">+ Add Client</button>
+                        </div>
+                        <div class="metrics-grid">
+                            <div class="card"><strong>Apple Inc.</strong><p style="color:var(--text-dim); font-size:12px; margin-top:8px;">Active Contract</p></div>
+                            <div class="card"><strong>Stripe</strong><p style="color:var(--text-dim); font-size:12px; margin-top:8px;">Pending Review</p></div>
+                            <div class="card"><strong>Airbnb</strong><p style="color:var(--text-dim); font-size:12px; margin-top:8px;">Active Contract</p></div>
+                        </div>
+                    </div>
+
+                    <div id="view-invoices" class="view hidden">
+                        <h3>Invoice Management</h3>
+                        <div style="margin-top:24px;">
+                            <div class="invoice-row mono" style="color:var(--text-dim); border-bottom: 2px solid var(--border);">
+                                <span>Client</span><span>Project</span><span>Amount</span><span>Status</span>
+                            </div>
+                            <div class="invoice-row"><span>Apple</span><span>Q4 Branding</span><span>$8,000</span><span class="status">SENT</span></div>
+                            <div class="invoice-row"><span>Stripe</span><span>Icon Set</span><span>$1,200</span><span class="status" style="background:rgba(255,255,255,0.1); color:white;">DRAFT</span></div>
+                            <div class="invoice-row"><span>Airbnb</span><span>UI Audit</span><span>$3,500</span><span class="status">OVERDUE</span></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <section class="container">
-            <div class="feature-grid">
-                <div class="f-card">
-                    <span class="mono">01</span>
-                    <h3 style="margin: 16px 0;">Ultra-Latency</h3>
-                    <p style="color: var(--text-dim);">Engineered with a rust-based core for interactions that feel instantaneous.</p>
-                </div>
-                <div class="f-card">
-                    <span class="mono">02</span>
-                    <h3 style="margin: 16px 0;">Semantic UI</h3>
-                    <p style="color: var(--text-dim);">An interface that learns your patterns and surfaces the tools you need.</p>
-                </div>
-                <div class="f-card">
-                    <span class="mono">03</span>
-                    <h3 style="margin: 16px 0;">Encrypted Flow</h3>
-                    <p style="color: var(--text-dim);">Your data is local-first and end-to-end encrypted by default.</p>
-                </div>
+        <section id="philosophy">
+            <div class="feature-item">
+                <span class="mono">Philosophy</span>
+                <h2 style="margin: 16px 0; font-size: 32px;">Accounting tools are for accountants. Klynt is for you.</h2>
+                <p style="color: var(--text-dim); max-width: 600px;">We removed the complex tax-jargon and replaced it with what matters: Who owes you money, how much you're making, and what's next on your plate.</p>
             </div>
+            
+            <div class="feature-item">
+                <span class="mono">Visibility</span>
+                <h2 style="margin: 16px 0; font-size: 32px;">Financial foresight as a standard.</h2>
+                <p style="color: var(--text-dim); max-width: 600px;">Our 'Money' view doesn't just show history; it forecasts your next 30 days based on active contracts and upcoming invoice dates.</p>
+            </div>
+        </section>
+
+        <section style="background: var(--surface); border-radius: 40px; text-align: center; margin-bottom: 120px;">
+            <p class="mono">The Future of Work</p>
+            <h2 style="font-size: 48px; margin: 24px 0;">Ready to clarify your business?</h2>
+            <button class="btn-mint" style="padding: 20px 40px; font-size: 18px;">Join the Private Beta</button>
         </section>
     </main>
 
     <footer>
-        <div class="container footer-content">
-            <div class="footer-col">
-                <div class="logo">KLYNT</div>
-                <p style="color: var(--text-dim); margin-top: 12px;">Precision design for digital teams.</p>
-            </div>
-            <div class="footer-col">
-                <h4>Platform</h4>
-                <ul>
-                    <li>Dashboard</li>
-                    <li>Integrations</li>
-                    <li>Security</li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4>Company</h4>
-                <ul>
-                    <li>About</li>
-                    <li>Journal</li>
-                    <li>Careers</li>
-                </ul>
-            </div>
+        <div class="container">
+            <div class="logo" style="justify-content:center; margin-bottom: 24px;">KL<span>Y</span>NT</div>
+            <p style="color: var(--text-dim); font-size: 14px;">&copy; 2026 Klynt Systems Inc. All rights reserved.</p>
         </div>
     </footer>
 
     <script>
-        // Simple Scroll Reveal Effect
-        const observerOptions = { threshold: 0.1 };
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = "1";
-                    entry.target.style.transform = "translateY(0)";
-                }
-            });
-        }, observerOptions);
+        function completeOnboarding() {
+            const name = document.getElementById('userName').value || 'Founder';
+            const role = document.getElementById('userRole').value;
+            
+            document.getElementById('welcomeMsg').innerText = `Welcome back, ${name.split(' ')[0]}.`;
+            document.getElementById('userDisplay').innerText = `ROLE: ${role.toUpperCase()}`;
+            document.getElementById('onboarding-overlay').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('onboarding-overlay').style.display = 'none';
+            }, 400);
+        }
 
-        document.querySelectorAll('.f-card, .dashboard-container').forEach(el => {
-            el.style.opacity = "0";
-            el.style.transform = "translateY(30px)";
-            el.style.transition = "var(--transition)";
-            observer.observe(el);
-        });
+        function resetOnboarding() {
+            document.getElementById('onboarding-overlay').style.display = 'flex';
+            setTimeout(() => {
+                document.getElementById('onboarding-overlay').style.opacity = '1';
+            }, 10);
+        }
+
+        function switchTab(viewId, el) {
+            // Update tabs
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
+
+            // Update views
+            document.querySelectorAll('.view').forEach(v => {
+                v.classList.add('hidden');
+                v.classList.remove('visible');
+            });
+            const activeView = document.getElementById('view-' + viewId);
+            if(activeView) {
+                activeView.classList.remove('hidden');
+                setTimeout(() => activeView.classList.add('visible'), 10);
+            }
+        }
     </script>
 </body>
 </html>
