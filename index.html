@@ -3,310 +3,238 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KLYNT — Product Case Study</title>
+    <title>KLYNT — Case Study</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #0A0A0A;
-            --surface: #141414;
-            --border: #262626;
+            /* Palette: Crème + Black + Mint */
+            --bg-dark: #0A0A0A;
+            --bg-creme: #FDFCF0;
             --mint: #00FFC2;
-            --text: #F5F5F5;
+            --mint-soft: rgba(0, 255, 194, 0.1);
+            --text-light: #FDFCF0;
+            --text-dark: #1A1A1A;
             --text-dim: #888888;
-            --ease: cubic-bezier(0.16, 1, 0.3, 1);
+            --border-light: rgba(255, 255, 255, 0.1);
+            --border-dark: rgba(0, 0, 0, 0.08);
+            --font-mono: 'JetBrains Mono', monospace;
+            --transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
-            background: var(--bg); 
-            color: var(--text); 
+            background: var(--bg-dark); 
+            color: var(--text-light); 
             font-family: 'Inter', sans-serif; 
-            line-height: 1.6; 
-            overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
         }
 
-        /* Typography */
-        h1, h2, h3 { font-weight: 700; letter-spacing: -0.04em; line-height: 1.1; }
-        .mono { font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--mint); }
-        p { font-weight: 300; color: var(--text-dim); font-size: 18px; }
+        /* --- GLOBAL ELEMENTS --- */
+        .logo-mark { height: 38px; filter: invert(1); transition: var(--transition); cursor: pointer; }
+        .logo-mark:hover { filter: invert(1) drop-shadow(0 0 10px var(--mint)); transform: rotate(-2deg); }
 
-        /* Navigation */
         nav {
             position: fixed; top: 0; width: 100%; z-index: 1000;
-            padding: 30px; display: flex; justify-content: space-between; align-items: center;
-            backdrop-filter: blur(10px); background: rgba(10,10,10,0.7);
-            border-bottom: 1px solid var(--border);
+            padding: 30px 5%; display: flex; justify-content: space-between; align-items: center;
+            backdrop-filter: blur(20px); border-bottom: 1px solid var(--border-light);
+            background: rgba(10, 10, 10, 0.8);
         }
-        .nav-logo { font-weight: 700; letter-spacing: -1px; font-size: 20px; }
-        .nav-logo span { color: var(--mint); }
 
-        /* Hero Section */
-        .hero { padding: 180px 5% 100px; max-width: 1400px; margin: 0 auto; text-align: left; }
-        .hero h1 { font-size: clamp(48px, 8vw, 110px); margin: 20px 0; max-width: 900px; }
-        
-        .metadata { 
-            display: grid; grid-template-columns: repeat(4, 1fr); 
-            gap: 40px; margin-top: 80px; padding-top: 40px; border-top: 1px solid var(--border);
+        .mono { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em; color: var(--mint); }
+
+        /* --- HERO SECTION (BLACK) --- */
+        .hero { padding: 220px 5% 120px; max-width: 1400px; margin: 0 auto; text-align: left; }
+        .hero h1 { font-size: clamp(44px, 8vw, 92px); font-weight: 700; line-height: 0.95; letter-spacing: -0.05em; margin: 24px 0; }
+        .hero p { font-size: 22px; color: var(--text-dim); max-width: 600px; font-weight: 300; line-height: 1.5; }
+
+        .meta-grid { 
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); 
+            gap: 40px; margin-top: 100px; padding-top: 40px; border-top: 1px solid var(--border-light);
         }
-        .meta-item h4 { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-dim); margin-bottom: 8px; }
-        .meta-item p { font-size: 14px; color: var(--text); }
+        .meta-item h4 { font-family: var(--font-mono); font-size: 10px; color: var(--text-dim); margin-bottom: 10px; }
+        .meta-item p { font-size: 14px; color: var(--text-light); }
 
-        /* Case Study Sections */
-        section { padding: 140px 5%; max-width: 1400px; margin: 0 auto; }
-        .section-header { margin-bottom: 60px; max-width: 800px; }
-        .section-header h2 { font-size: 48px; margin: 16px 0; }
+        /* --- PROBLEM SECTION (TRANSITION) --- */
+        .section-problem { padding: 140px 5%; max-width: 1400px; margin: 0 auto; }
+        .section-problem h2 { font-size: 52px; margin-bottom: 30px; letter-spacing: -0.03em; }
+        .content-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; }
 
-        /* Product Previews */
-        .mockup-container {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 12px;
+        /* --- WORKSPACE SECTION (CRÈME) --- */
+        .workspace-reveal {
+            background-color: var(--bg-creme);
+            color: var(--text-dark);
+            border-radius: 60px 60px 0 0;
+            padding: 120px 5%;
+            margin-top: 80px;
+        }
+
+        .app-container {
+            max-width: 1100px;
+            margin: 60px auto 0;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.08);
+            border: 1px solid var(--border-dark);
             overflow: hidden;
-            position: relative;
-            box-shadow: 0 40px 100px rgba(0,0,0,0.5);
-            margin: 40px 0;
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            height: 720px;
         }
 
-        /* The Interface (Dashboard Mockup) */
-        .ui-chrome {
-            background: #1F1F1F; padding: 12px 20px; display: flex; gap: 8px; border-bottom: 1px solid var(--border);
-        }
-        .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--border); }
-        .ui-main { display: grid; grid-template-columns: 240px 1fr; min-height: 600px; }
-        .ui-sidebar { border-right: 1px solid var(--border); padding: 30px; }
-        .ui-body { padding: 50px; }
-
-        /* Dashboard Specifics */
-        .ui-nav-item { padding: 12px 0; color: var(--text-dim); font-size: 14px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid rgba(255,255,255,0.03); cursor: pointer; transition: 0.3s; }
-        .ui-nav-item.active { color: var(--mint); font-weight: 600; }
+        /* App UI elements */
+        .app-side { background: #F9F9F4; border-right: 1px solid var(--border-dark); padding: 40px 24px; }
+        .app-main { padding: 50px; background: white; overflow-y: auto; }
+        .nav-pill { padding: 10px 14px; font-size: 13px; color: #777; border-radius: 8px; margin-bottom: 4px; cursor: pointer; transition: 0.2s; }
+        .nav-pill.active { background: #FDFCF0; color: var(--text-dark); font-weight: 600; border: 1px solid var(--border-dark); }
         
-        .card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 30px; }
-        .ui-card { background: #1A1A1A; border: 1px solid var(--border); padding: 24px; border-radius: 8px; }
-        .ui-card span { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-dim); }
-        .ui-card h3 { font-size: 28px; margin-top: 10px; }
+        .stat-group { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin: 40px 0; }
+        .stat-box { border: 1px solid var(--border-dark); padding: 24px; border-radius: 12px; }
+        .stat-box span { font-family: var(--font-mono); font-size: 10px; color: #999; }
+        .stat-box h3 { font-size: 26px; margin-top: 8px; color: var(--text-dark); }
 
-        /* Feature List */
-        .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; }
-        .feature-item { border-top: 1px solid var(--border); padding-top: 30px; }
-        .feature-item h3 { margin-bottom: 15px; font-size: 24px; }
+        .invoice-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        .invoice-table th { text-align: left; font-family: var(--font-mono); font-size: 10px; color: #AAA; padding: 12px; border-bottom: 1px solid var(--border-dark); }
+        .invoice-table td { padding: 16px 12px; font-size: 14px; border-bottom: 1px solid var(--border-dark); }
 
-        /* Design System Section */
-        .design-system { display: flex; gap: 40px; flex-wrap: wrap; }
-        .color-swatch { width: 120px; text-align: center; }
-        .swatch { height: 120px; border-radius: 8px; margin-bottom: 10px; border: 1px solid var(--border); }
-
-        /* Footer */
-        footer { padding: 100px 5%; text-align: center; border-top: 1px solid var(--border); }
-        .footer-cta h2 { font-size: 64px; margin-bottom: 40px; }
-        .btn { 
-            display: inline-block; padding: 20px 40px; border: 1px solid var(--mint); color: var(--mint); 
-            text-decoration: none; font-family: 'JetBrains Mono', monospace; font-size: 14px;
-            transition: all 0.4s var(--ease);
+        /* --- FOOTER --- */
+        footer { 
+            background: var(--bg-creme); 
+            color: var(--text-dark); 
+            padding: 140px 5%; 
+            text-align: center; 
+            border-top: 1px solid var(--border-dark);
         }
-        .btn:hover { background: var(--mint); color: var(--bg); transform: translateY(-5px); }
+        .footer-logo { height: 60px; filter: invert(0); margin-bottom: 40px; opacity: 0.8; }
+        .footer-cta h2 { font-size: clamp(32px, 5vw, 64px); letter-spacing: -0.04em; margin-bottom: 40px; }
+        
+        .btn-mint {
+            display: inline-block; padding: 20px 48px; background: var(--bg-dark); color: var(--mint);
+            text-decoration: none; font-family: var(--font-mono); font-size: 13px; border-radius: 4px;
+            transition: var(--transition);
+        }
+        .btn-mint:hover { transform: translateY(-4px); box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
 
-        /* Responsive */
         @media (max-width: 900px) {
-            .metadata { grid-template-columns: 1fr 1fr; }
-            .ui-sidebar { display: none; }
-            .ui-main { grid-template-columns: 1fr; }
-            .feature-grid { grid-template-columns: 1fr; }
-            .hero h1 { font-size: 52px; }
+            .content-cols, .app-container { grid-template-columns: 1fr; }
+            .app-side { display: none; }
+            .hero h1 { font-size: 48px; }
         }
     </style>
 </head>
 <body>
 
     <nav>
-        <div class="nav-logo">KL<span>Y</span>NT</div>
-        <div class="mono" style="font-size: 10px;">Product Case Study 2026</div>
+        <img src="YOUR_LOGO_URL" alt="Klynt" class="logo-mark">
+        <div style="display: flex; gap: 30px;">
+            <a href="#" class="mono" style="text-decoration: none; color: var(--text-dim);">Approach</a>
+            <a href="#" class="mono" style="text-decoration: none; color: var(--mint);">Launch Portal</a>
+        </div>
     </nav>
 
     <header class="hero">
-        <span class="mono">Case Study: 001</span>
-        <h1>Engineering a calm engine for the solo operator.</h1>
-        <p>Klynt is a high-fidelity business management interface designed to eliminate the friction of client tracking and invoicing for creative founders.</p>
+        <span class="mono">Case Study 2026</span>
+        <h1>Klynt — The engine of<br>business visibility.</h1>
+        <p>A high-fidelity workspace designed to eliminate the administrative friction for creative founders.</p>
         
-        <div class="metadata">
-            <div class="meta-item">
-                <h4>ROLE</h4>
-                <p>Product Design, Brand Identity</p>
-            </div>
-            <div class="meta-item">
-                <h4>CATEGORY</h4>
-                <p>SaaS / FinTech</p>
-            </div>
-            <div class="meta-item">
-                <h4>PLATFORM</h4>
-                <p>Web / Desktop App</p>
-            </div>
-            <div class="meta-item">
-                <h4>TOOLS</h4>
-                <p>Figma, React, Tailwind</p>
-            </div>
+        <div class="meta-grid">
+            <div class="meta-item"><h4>ROLE</h4><p>Brand & Product</p></div>
+            <div class="meta-item"><h4>PROJECT</h4><p>SaaS Infrastructure</p></div>
+            <div class="meta-item"><h4>DELIVERABLES</h4><p>UI, UX, Identity</p></div>
+            <div class="meta-item"><h4>FOCUS</h4><p>Clarity</p></div>
         </div>
     </header>
 
-    <section id="problem">
-        <div class="section-header">
-            <span class="mono">The Challenge</span>
-            <h2>The Administrative Tax.</h2>
-            <p>Most business tools for freelancers are either too "friendly" and lack depth, or too enterprise-heavy and cause cognitive overload. Founders spend 20% of their week just trying to remember who has paid and who hasn't.</p>
-        </div>
-    </section>
-
-    <section id="strategy" style="background: #0F0F0F;">
-        <div class="feature-grid">
-            <div class="feature-item">
-                <span class="mono">Objective</span>
-                <h3>Reduce Friction</h3>
-                <p>Every interaction in Klynt was measured by "time-to-clarity." We aimed to make client status visible in under 2 seconds.</p>
+    <section class="section-problem">
+        <div class="content-cols">
+            <div>
+                <span class="mono">The Challenge</span>
+                <h2>Fragmented Flow.</h2>
             </div>
-            <div class="feature-item">
-                <span class="mono">Visual Identity</span>
-                <h3>High-Contrast Trust</h3>
-                <p>Using deep blacks and mint accents creates a premium environment that signals stability and control.</p>
+            <div>
+                <p>Most independent operators juggle clients across texts, spreadsheets, and legacy invoicing tools. This fragmentation doesn't just waste time—it erodes the professional authority founders need to scale.</p>
             </div>
         </div>
     </section>
 
-    <section id="dashboard">
-        <div class="section-header">
-            <span class="mono">The Core Experience</span>
-            <h2>One Screen. Zero Noise.</h2>
-            <p>The dashboard focuses on the "Founder's Vitals"—Cash flow, pending tasks, and immediate actions.</p>
-        </div>
+    <section class="workspace-reveal">
+        <div style="max-width: 1400px; margin: 0 auto;">
+            <span class="mono" style="color: #999;">The System</span>
+            <h2 style="font-size: 48px; margin: 16px 0;">Organic Precision.</h2>
+            <p style="max-width: 600px; font-size: 18px; color: #666;">We utilized a warm crème palette to create a "paper-like" workspace that feels editorial, high-end, and human—moving away from the clinical coldness of traditional SaaS.</p>
 
-        <div class="mockup-container">
-            <div class="ui-chrome">
-                <div class="dot"></div><div class="dot"></div><div class="dot"></div>
-            </div>
-            <div class="ui-main">
-                <aside class="ui-sidebar">
-                    <div class="ui-nav-item active">Home</div>
-                    <div class="ui-nav-item">Clients</div>
-                    <div class="ui-nav-item">Invoices</div>
-                    <div class="ui-nav-item">Money</div>
-                    <div class="ui-nav-item" style="margin-top: 200px; opacity: 0.5;">Settings</div>
+            <div class="app-container">
+                <aside class="app-side">
+                    <div class="mono" style="color: #CCC; margin-bottom: 24px; font-size: 9px;">Main Workspace</div>
+                    <div class="nav-pill active">Home Overview</div>
+                    <div class="nav-pill">Client Directory (18)</div>
+                    <div class="nav-pill">Invoices & Ledger</div>
+                    <div class="nav-pill">Cash Flow</div>
+                    <div style="margin-top: 140px;" class="nav-pill">System Settings</div>
                 </aside>
-                <div class="ui-body">
-                    <div style="display:flex; justify-content: space-between; align-items: flex-end;">
-                        <h3>Welcome back, Alex.</h3>
-                        <span class="mono" style="font-size: 10px; color: var(--text-dim);">Last Sync: Just Now</span>
-                    </div>
-                    
-                    <div class="card-grid">
-                        <div class="ui-card">
-                            <span>REVENUE (MTD)</span>
-                            <h3 id="counter1">$0.00</h3>
+                <main class="app-main">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+                        <div>
+                            <span class="mono" style="color: var(--mint); letter-spacing: 0.1em;">Active Portal</span>
+                            <h3 style="font-size: 28px; margin-top: 8px;">Good afternoon, Shaun.</h3>
                         </div>
-                        <div class="ui-card">
+                        <div style="text-align: right;">
+                            <span class="mono" style="color: #BBB; font-size: 9px;">Current Balance</span>
+                            <div style="font-size: 20px; font-weight: 700;">$22,600.00</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-group">
+                        <div class="stat-box">
                             <span>OPEN INVOICES</span>
-                            <h3>08</h3>
+                            <h3>$8,420</h3>
                         </div>
-                        <div class="ui-card">
-                            <span>LTV RATIO</span>
-                            <h3>4.2x</h3>
+                        <div class="stat-box">
+                            <span>COLLECTED</span>
+                            <h3 style="color: var(--mint);">$14,180</h3>
+                        </div>
+                        <div class="stat-box">
+                            <span>PENDING</span>
+                            <h3>03</h3>
                         </div>
                     </div>
 
-                    <div style="margin-top: 40px; background: #111; padding: 20px; border-radius: 8px; border-left: 3px solid var(--mint);">
-                        <span class="mono">Action Required</span>
-                        <p style="font-size: 14px; margin-top: 5px; color: var(--text);">Invoice #882 for "Stripe Inc" is 2 days overdue. Send reminder?</p>
+                    <div style="margin-top: 40px;">
+                        <span class="mono" style="color: #999;">Recent Ledger Activity</span>
+                        <table class="invoice-table">
+                            <thead>
+                                <tr><th>Ref</th><th>Client</th><th>Status</th><th>Amount</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>#KL-2041</td><td>Northline Studio</td><td><span style="color: var(--mint); font-weight: 700;">PAID</span></td><td>$2,400</td></tr>
+                                <tr><td>#KL-2043</td><td>Modern Root</td><td><span style="color: #FF4D4D; font-weight: 700;">OVERDUE</span></td><td>$860</td></tr>
+                            </tbody>
+                        </table>
                     </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="design-system">
-        <div class="section-header">
-            <span class="mono">Visual Infrastructure</span>
-            <h2>Atomic Patterns.</h2>
-            <p>A restrained UI language built for longevity.</p>
-        </div>
-        <div class="design-system">
-            <div class="color-swatch">
-                <div class="swatch" style="background: #0A0A0A;"></div>
-                <span class="mono">#0A0A0A</span>
-            </div>
-            <div class="color-swatch">
-                <div class="swatch" style="background: #00FFC2;"></div>
-                <span class="mono">#00FFC2</span>
-            </div>
-            <div class="color-swatch">
-                <div class="swatch" style="background: #F5F5F5;"></div>
-                <span class="mono">#F5F5F5</span>
-            </div>
-            <div class="color-swatch" style="flex: 1; padding-left: 40px;">
-                <h4 class="mono" style="margin-bottom: 10px;">Typography</h4>
-                <p style="font-size: 32px; color: var(--text); font-weight: 700;">Inter Variable</p>
-                <p style="font-family: 'JetBrains Mono'; color: var(--mint);">JetBrains Mono (System Labels)</p>
+                </main>
             </div>
         </div>
     </section>
 
     <footer>
+        <img src="YOUR_LOGO_URL" alt="Klynt" class="footer-logo">
         <div class="footer-cta">
-            <span class="mono">Conclusion</span>
-            <h2>Simplicity is the ultimate scale.</h2>
-            <a href="#" class="btn">EXPLORE MORE WORK</a>
-        </div>
-        <div style="margin-top: 100px; display: flex; justify-content: space-between; align-items: center; opacity: 0.3;">
-            <p style="font-size: 12px;">© 2026 Klynt Systems</p>
-            <p style="font-size: 12px;">Built with Intention</p>
+            <h2>Simplicity is the<br>ultimate scale.</h2>
+            <a href="#" class="btn-mint">EXPLORE NEXT PROJECT</a>
+            <p style="margin-top: 80px; font-family: var(--font-mono); font-size: 10px; color: #BBB; letter-spacing: 0.2em;">© 2026 KLYNT DIGITAL SYSTEMS</p>
         </div>
     </footer>
 
     <script>
-        // Simple Intersection Observer for Fade-in effects
-        const observerOptions = {
-            threshold: 0.1
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                    if(entry.target.id === 'dashboard') animateValue("counter1", 0, 12450, 2000);
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('section').forEach(section => {
-            section.style.opacity = '0';
-            section.style.transform = 'translateY(40px)';
-            section.style.transition = 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
-            observer.observe(section);
+        // Smooth entrance for portfolio feel
+        window.addEventListener('DOMContentLoaded', () => {
+            document.body.style.opacity = '0';
+            setTimeout(() => {
+                document.body.style.transition = 'opacity 1.2s ease';
+                document.body.style.opacity = '1';
+            }, 100);
         });
-
-        // Metric Counter Animation
-        function animateValue(id, start, end, duration) {
-            let obj = document.getElementById(id);
-            let range = end - start;
-            let minTimer = 50;
-            let stepTime = Math.abs(Math.floor(duration / range));
-            stepTime = Math.max(stepTime, minTimer);
-            let startTime = new Date().getTime();
-            let endTime = startTime + duration;
-            let timer;
-
-            function run() {
-                let now = new Date().getTime();
-                let remaining = Math.max((endTime - now) / duration, 0);
-                let value = Math.round(end - (remaining * range));
-                obj.innerHTML = "$" + value.toLocaleString();
-                if (value == end) {
-                    clearInterval(timer);
-                }
-            }
-
-            timer = setInterval(run, stepTime);
-            run();
-        }
     </script>
 </body>
 </html>
